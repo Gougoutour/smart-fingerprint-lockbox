@@ -3,6 +3,7 @@
 #include "OLED.h"
 #include "Delay.h"
 #include "PWM.h"
+#include "Serial.h"
 /**
  * @brief 页面类型
  */
@@ -91,7 +92,7 @@ static void Page_Execute(void)
             OLED_ShowString(1, 1, "Verify Success");
             OLED_ShowString(2, 1, "Unlocked");
 			PWM_SetCompare3(SERVO_UNLOCK_PULSE);
-		
+			Serial_Printf("Unlocked Success");
 			// 10秒后自动关锁
 			Delay_s(10);
 			PWM_SetCompare3(SERVO_LOCK_PULSE);
@@ -131,6 +132,7 @@ int main(void)
     OLED_Init();
     Key_Init();
 	PWM_Init();
+	Serial_Init();
 	Page_Show(CurrentPage);
 	PWM_SetCompare3(SERVO_LOCK_PULSE);
     while (1)

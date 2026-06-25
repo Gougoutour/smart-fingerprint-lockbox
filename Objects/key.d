@@ -1,4 +1,4 @@
-.\objects\key.o: KEY.c
+.\objects\key.o: Hardware\KEY.c
 .\objects\key.o: .\Start\stm32f10x.h
 .\objects\key.o: .\Start\core_cm3.h
 .\objects\key.o: D:\develop\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -28,4 +28,4 @@
 .\objects\key.o: .\Library\stm32f10x_usart.h
 .\objects\key.o: .\Library\stm32f10x_wwdg.h
 .\objects\key.o: .\Library\misc.h
-.\objects\key.o: .\Hardware\Key.h
+.\objects\key.o: Hardware\Key.h

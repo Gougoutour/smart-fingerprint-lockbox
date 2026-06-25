@@ -31,4 +31,6 @@
 .\objects\main.o: .\Hardware\Key.h
 .\objects\main.o: .\Hardware\OLED.h
 .\objects\main.o: .\System\Delay.h
-.\objects\main.o: PWM.h
+.\objects\main.o: .\Hardware\PWM.h
+.\objects\main.o: .\Hardware\Serial.h
+.\objects\main.o: D:\develop\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
