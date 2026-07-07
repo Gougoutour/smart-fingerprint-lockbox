@@ -760,6 +760,26 @@
               <FileType>5</FileType>
               <FilePath>.\Hardware\Serial.h</FilePath>
             </File>
+            <File>
+              <FileName>FingerSerial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\FingerSerial.c</FilePath>
+            </File>
+            <File>
+              <FileName>FingerSerial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\FingerSerial.h</FilePath>
+            </File>
+            <File>
+              <FileName>Finger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\Finger.c</FilePath>
+            </File>
+            <File>
+              <FileName>Finger.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\Finger.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

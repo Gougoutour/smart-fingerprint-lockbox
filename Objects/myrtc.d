@@ -28,3 +28,7 @@
 .\objects\myrtc.o: .\Library\stm32f10x_usart.h
 .\objects\myrtc.o: .\Library\stm32f10x_wwdg.h
 .\objects\myrtc.o: .\Library\misc.h
+.\objects\myrtc.o: System\MYRTC.h
+.\objects\myrtc.o: D:\develop\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+.\objects\myrtc.o: D:\develop\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\myrtc.o: D:\develop\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

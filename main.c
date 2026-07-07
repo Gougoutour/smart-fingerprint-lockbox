@@ -4,6 +4,9 @@
 #include "Delay.h"
 #include "PWM.h"
 #include "Serial.h"
+#include "MyRTC.h"
+#include "FingerSerial.h"
+#include "Finger.h" 
 /**
  * @brief 页面类型
  */
@@ -28,7 +31,8 @@ static void Page_Show(PageType page){
 	switch (page){
 		case PAGE_WAITING:
             OLED_ShowString(1, 1, "Fingerprint");
-            OLED_ShowString(2, 1, "Waiting...");
+            OLED_ShowString(2, 1, "date:0000-00-00");
+            OLED_ShowString(3, 1, "time:00:00:00");
             OLED_ShowString(4, 1, "< Prev  Next >");
             break;
 
@@ -73,6 +77,8 @@ static void Page_Next(void){
 	Page_Show(CurrentPage);
 }
 
+
+
 /**
  * @brief 执行当前页面的功能
  *
@@ -85,19 +91,93 @@ static void Page_Execute(void)
     switch (CurrentPage)
     {
         case PAGE_WAITING:
-            /*
-             * 暂时模拟指纹识别成功。
-             * 以后替换为真正的指纹识别函数。
+		{
+			/*
+             * 指纹识别函数。
              */
-            OLED_ShowString(1, 1, "Verify Success");
-            OLED_ShowString(2, 1, "Unlocked");
-			PWM_SetCompare3(SERVO_UNLOCK_PULSE);
-			Serial_Printf("Unlocked Success");
-			// 10秒后自动关锁
-			Delay_s(10);
-			PWM_SetCompare3(SERVO_LOCK_PULSE);
-            break;
+			uint8_t result;
+			OLED_Clear();
+			OLED_ShowString(1,1,"Place Finger");
+			result = Finger_GetImage();
+			if(result == 0x00){
+				OLED_ShowString(1,1,"Finger OK");
+				// 生成指纹特征
+				result =Finger_GenChar(1);
+				
+				if(result == 0x00)
+				{
+					OLED_ShowString(2,1,"Remove Finger");
+					Finger_WaitRelease();
+					OLED_ShowString(2,1,"Place Again");
 
+					
+					while(1)
+					{
+						result = Finger_GetImage();
+					
+						if(result == 0x00)
+						{
+							break;
+						}
+					
+						Delay_ms(300);
+					}
+
+					Serial_Printf("After second get %02X\r\n",result);
+					if(result == 0x00)
+					{
+						result = Finger_GenChar(2);
+
+
+						if(result == 0x00)
+						{
+							Serial_Printf("Second Gen OK\r\n");
+							Serial_Printf("Gen Ok\r\n");
+							PWM_SetCompare3(SERVO_UNLOCK_PULSE);
+							Delay_s(10);
+			
+							PWM_SetCompare3(SERVO_LOCK_PULSE);
+						}else
+						{
+							Serial_Printf(
+								"GenChar Fail:%02X\r\n",
+								result
+							);
+						}
+					}
+
+				}
+				else
+				{
+					Serial_Printf(
+						"GenChar Fail:%02X\r\n",
+						result
+					);
+				}
+
+			}
+			else if(result == 0x02)
+			{
+				OLED_ShowString(
+					1,
+					1,
+					"No Finger"
+				);
+			}
+			else
+			{
+				OLED_ShowString(
+					1,
+					1,
+					"Error"
+				);
+			}
+		
+			Delay_ms(2000);
+		
+			break;
+			
+		}
         case PAGE_ENROLL:
             /*
              * 暂时模拟指纹录入成功。
@@ -125,6 +205,33 @@ static void Page_Execute(void)
     Page_Show(CurrentPage);
 }
 
+static void Page_UpdateTime(void)
+{
+    static uint8_t lastSecond = 255;
+
+    if (CurrentPage != PAGE_WAITING)
+    {
+        return;
+    }
+
+    MyRTC_ReadTime();
+
+    if (MyRTC_Time[5] == lastSecond)
+    {
+        return;
+    }
+
+    lastSecond = MyRTC_Time[5];
+
+    OLED_ShowNum(2, 6,  MyRTC_Time[0], 4);
+    OLED_ShowNum(2, 11, MyRTC_Time[1], 2);
+    OLED_ShowNum(2, 14, MyRTC_Time[2], 2);
+
+    OLED_ShowNum(3, 6,  MyRTC_Time[3], 2);
+    OLED_ShowNum(3, 9,  MyRTC_Time[4], 2);
+    OLED_ShowNum(3, 12, MyRTC_Time[5], 2);
+}
+
 int main(void)
 {
     uint8_t keyNum;
@@ -133,10 +240,22 @@ int main(void)
     Key_Init();
 	PWM_Init();
 	Serial_Init();
+	FingerSerial_Init();
+	MyRTC_Init();
 	Page_Show(CurrentPage);
 	PWM_SetCompare3(SERVO_LOCK_PULSE);
+	
+	Delay_ms(1000);
+
+
+    Serial_Printf(
+        "Start \r\n"
+    );
+
+
     while (1)
     {
+		Page_UpdateTime(); 
         keyNum = Key_GetNum();
 
         if (keyNum == 3)

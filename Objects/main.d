@@ -34,3 +34,6 @@
 .\objects\main.o: .\Hardware\PWM.h
 .\objects\main.o: .\Hardware\Serial.h
 .\objects\main.o: D:\develop\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: .\System\MyRTC.h
+.\objects\main.o: .\Hardware\FingerSerial.h
+.\objects\main.o: .\Hardware\Finger.h

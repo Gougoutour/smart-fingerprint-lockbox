@@ -35,6 +35,8 @@
 ".\objects\countsenser.o"
 ".\objects\pwm.o"
 ".\objects\serial.o"
+".\objects\fingerserial.o"
+".\objects\finger.o"
 ".\objects\main.o"
 ".\objects\stm32f10x_it.o"
 --library_type=microlib --strict --scatter ".\Objects\Project.sct"
