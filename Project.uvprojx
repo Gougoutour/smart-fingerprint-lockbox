@@ -670,6 +670,36 @@
               <FileType>5</FileType>
               <FilePath>.\System\MyRTC.h</FilePath>
             </File>
+            <File>
+              <FileName>Page.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\Page.c</FilePath>
+            </File>
+            <File>
+              <FileName>Page.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\System\Page.h</FilePath>
+            </File>
+            <File>
+              <FileName>Lock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\Lock.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lock.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\System\Lock.h</FilePath>
+            </File>
+            <File>
+              <FileName>FingerApp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\FingerApp.c</FilePath>
+            </File>
+            <File>
+              <FileName>FingerApp.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\System\FingerApp.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

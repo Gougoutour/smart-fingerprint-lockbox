@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #define RTC_INIT_FLAG  0xA5A5
-uint16_t MyRTC_Time[]={2026,6,25,17,40,40};
+uint16_t MyRTC_Time[]={2026,7,14,13,34,40};
 static uint8_t MyRTC_GetMonth(const char *month)
 {
     static const char *monthList[] = {

@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "STM32F10x (Keil)",
+            "includePath": [
+                "D:/develop/Keil_v5/ARM/ARMCC/include",
+                "${workspaceFolder}/Start",
+                "${workspaceFolder}/Library",
+                "${workspaceFolder}/User",
+                "${workspaceFolder}/System",
+                "${workspaceFolder}/Hardware"
+            ],
+            "defines": [
+                "USE_STDPERIPH_DRIVER",
+                "__CC_ARM"
+            ],
+            "compilerPath": "",
+            "cStandard": "c99",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "windows-gcc-arm"
+        }
+    ],
+    "version": 4
+}
