@@ -35,14 +35,16 @@ static uint8_t FingerApp_WaitSecondImage(void)
 }
 
 /**
- * @brief 执行指纹开锁流程
+ * @brief 执行指纹录入流程
  */
-void FingerApp_Unlock(void)
+void FingerApp_Enroll(void)
 {
     uint8_t result;
-
+	int32_t templateNum;
+	templateNum=Finger_ValidTemplateNum();
     OLED_ShowString(1, 1, "Place Finger");
-
+	OLED_ShowNum(1,14,templateNum,3);
+	
     /*
      * 第一次采集指纹图像。
      */
@@ -110,22 +112,88 @@ void FingerApp_Unlock(void)
         return;
     }
 
+	// 合并特征
+	result= Finger_RegModel();
+	if(result!=0x00)
+	{
+		OLED_ShowString(3, 1, "RegModel Error");
+        Serial_Printf("RegModel:%02X\r\n", result);
+		return;
+	}
+	
+	// 储存模板
+	result = Finger_StoreChar(1,(uint16_t)templateNum);
+ 	if(result!=0x00){
+		OLED_ShowString(3, 1, "StoreChar Error");
+        Serial_Printf("StoreChar:%02X\r\n", result);
+		return;
+	}
     OLED_ShowString(1, 1, "Unlock Success");
+	templateNum=Finger_ValidTemplateNum();
+	OLED_ShowNum(4,1,templateNum,3);
     Serial_Printf("Second GenChar OK\r\n");
 
-    Lock_UnlockForSeconds(10);
 }
 
 /**
- * @brief 指纹录入
+ * @brief 指纹解锁
  */
-void FingerApp_Enroll(void)
+void FingerApp_Unlock(void)
 {
     /*
-     * 后续将正式录入逻辑写在这里。
+     * 后续将正式解锁逻辑写在这里。
      */
     OLED_ShowString(1, 1, "Enroll Success");
     OLED_ShowString(2, 1, "Finger ID: 1");
+	
+	uint8_t result;
+	int32_t templateNum;
+	templateNum=Finger_ValidTemplateNum();
+    OLED_ShowString(1, 1, "Place Finger");
+	OLED_ShowNum(1,14,templateNum,3);
+	
+    /*
+     * 采集指纹图像。
+     */
+    result = Finger_GetImage();
+
+    if (result == 0x02)
+    {
+        OLED_ShowString(1, 1, "No Finger");
+        return;
+    }
+
+    if (result != 0x00)
+    {
+        OLED_ShowString(1, 1, "GetImage Error");
+        Serial_Printf("First GetImage Fail:%02X\r\n", result);
+        return;
+    }
+
+    OLED_ShowString(1, 1, "Finger OK");
+
+    /*
+     * 将第一次图像生成到特征缓冲区1。
+     */
+    result = Finger_GenChar(1);
+
+    if (result != 0x00)
+    {
+        OLED_ShowString(2, 1, "GenChar1 Error");
+        Serial_Printf("First GenChar Fail:%02X\r\n", result);
+        return;
+    }
+
+	result=Finger_Search(1,0,100); // 指纹库容量为100
+	
+	if (result != 0x00)
+    {
+        OLED_ShowString(2, 1, "Search Error");
+        Serial_Printf("Search Fail:%02X\r\n", result);
+        return;
+    }
+	
+	Lock_UnlockForSeconds(10);
 }
 
 /**
@@ -138,4 +206,14 @@ void FingerApp_Delete(void)
      */
     OLED_ShowString(1, 1, "Delete Success");
     OLED_ShowString(2, 1, "Finger ID: 1");
+}
+
+/**
+ * @brief 获取指纹模块触摸状态
+ * @return 1：检测到手指
+ * @return 0：未检测到手指
+ */
+uint8_t FingerTouch_GetState(void)
+{
+    return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10);
 }

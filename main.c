@@ -7,11 +7,12 @@
 #include "FingerSerial.h"
 #include "Lock.h"
 #include "Page.h"
-
+#include "FingerApp.h"
 int main(void)
 {
     uint8_t keyNum;
-
+	uint8_t touchState;
+    uint8_t lastTouchState = 0;
     OLED_Init();
     Key_Init();
     Serial_Init();
@@ -36,9 +37,19 @@ int main(void)
         {
             Page_Next();
         }
-        else if (keyNum == 1)
+
+        touchState=FingerTouch_GetState();
+		if (touchState == 1 && lastTouchState == 0)
         {
-            Page_Execute();
+            Delay_ms(20); // 简单消抖
+
+            if (FingerTouch_GetState() == 1)
+            {
+                Serial_Printf("Finger detected\r\n");
+                Page_Execute();
+            }
         }
+		
+        lastTouchState = touchState;
     }
 }

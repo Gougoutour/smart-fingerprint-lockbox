@@ -1,6 +1,5 @@
 .\objects\fingerapp.o: System\FingerApp.c
 .\objects\fingerapp.o: System\FingerApp.h
-.\objects\fingerapp.o: .\Hardware\Finger.h
 .\objects\fingerapp.o: .\Start\stm32f10x.h
 .\objects\fingerapp.o: .\Start\core_cm3.h
 .\objects\fingerapp.o: D:\develop\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -30,6 +29,7 @@
 .\objects\fingerapp.o: .\Library\stm32f10x_usart.h
 .\objects\fingerapp.o: .\Library\stm32f10x_wwdg.h
 .\objects\fingerapp.o: .\Library\misc.h
+.\objects\fingerapp.o: .\Hardware\Finger.h
 .\objects\fingerapp.o: .\Hardware\OLED.h
 .\objects\fingerapp.o: .\Hardware\Serial.h
 .\objects\fingerapp.o: D:\develop\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

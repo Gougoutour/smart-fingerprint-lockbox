@@ -37,3 +37,4 @@
 .\objects\main.o: .\Hardware\FingerSerial.h
 .\objects\main.o: .\System\Lock.h
 .\objects\main.o: .\System\Page.h
+.\objects\main.o: .\System\FingerApp.h
